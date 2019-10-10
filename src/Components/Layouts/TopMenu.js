@@ -5,6 +5,7 @@ import ResponsiveDrawer from './ResponsiveDrawer';
 import Alert from './Alerts';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { makeStyles } from '@material-ui/core/styles';
 //material ui component
 
 import {
@@ -68,12 +69,13 @@ function TopMenu(props) {
 		error,
 		clearErrors,
 		isAuthenticated,
-		user
+		user,
+		loading,
+		showLoading
 	} = authContext;
 
 	useEffect(() => {
-		// loadUser();
-
+		loadUser();
 		if (isAuthenticated) {
 			// props.history.push('/');
 			setOpen(false);
@@ -81,6 +83,14 @@ function TopMenu(props) {
 		}
 
 		if (error === 'Invalid Credentials') {
+			setAlert(error, 'danger');
+			clearErrors();
+		}
+		if (error === 'User already exists') {
+			setAlert(error, 'danger');
+			clearErrors();
+		}
+		if (error === 'Email doesnt exist') {
 			setAlert(error, 'danger');
 			clearErrors();
 		}
@@ -146,6 +156,7 @@ function TopMenu(props) {
 			setAlert('Please fill in all fields', 'danger');
 		} else {
 			console.log('login called');
+			showLoading();
 			login({
 				email,
 				password
@@ -159,6 +170,7 @@ function TopMenu(props) {
 			setAlert('Please fill in all fields', 'danger');
 		} else {
 			console.log('register called');
+			showLoading();
 			register({
 				name,
 				email,
@@ -260,7 +272,7 @@ function TopMenu(props) {
 							</Grid>
 						</div>
 					</Hidden>
-					<div style={{ marginLeft: 'auto' }}>
+					<div style={{ marginLeft: 'auto' }} >
 						<Tooltip title='Night Mode'>
 							<IconButton
 								color='inherit'
@@ -285,6 +297,7 @@ function TopMenu(props) {
 								></i>
 							</a>
 						</Tooltip>
+
 						{/* <Tooltip title='Log-in'>
 							<IconButton
 								color='inherit'
@@ -314,12 +327,12 @@ function TopMenu(props) {
 								id='menu-appbar'
 								anchorEl={anchorEl}
 								anchorOrigin={{
-									vertical: 'top',
+									vertical: 'bottom',
 									horizontal: 'right'
 								}}
 								keepMounted
 								transformOrigin={{
-									vertical: 'top',
+									vertical: 'bottom',
 									horizontal: 'right'
 								}}
 								open={isOpen}
@@ -390,7 +403,7 @@ function TopMenu(props) {
 									/>
 									<TextField
 										id='outlined-password-input'
-										label='password'
+										label='Password'
 										type='password'
 										name='password'
 										value={password}
@@ -405,10 +418,17 @@ function TopMenu(props) {
 										size='large'
 										onClick={handleLogin}
 										to={'/login'}
+										disabled={loading}
 										style={{ marginTop: '16px' }}
 									>
 										Login
 									</Button>
+									<div style={{marginTop: '10px'}}>
+									<p>You not have a Accounts?</p>
+									<Link style={{color: "#007791"}} to={"/signup"} > 
+                                       Sign up 
+                                    </Link>
+									</div>
 								</div>
 							</Fade>
 						</Modal>
@@ -485,6 +505,7 @@ function TopMenu(props) {
 										color='primary'
 										size='large'
 										onClick={handleRegister}
+										disabled={loading}
 										to={'/login'}
 										style={{ marginTop: '16px' }}
 									>

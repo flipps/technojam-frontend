@@ -1,3 +1,4 @@
+import './App.css';
 import { Container, Button, Link } from 'react-floating-action-button';
 import React, { Fragment, useState, useContext } from 'react';
 import { TopMenu, Footer } from './Components/Layouts';
@@ -5,6 +6,7 @@ import Maincontent from './Components/Maincontent';
 import AuthContext from './context/auth/AuthState';
 import AlertContext from './context/alert/AlertState';
 import { Hidden } from '@material-ui/core';
+
 
 const sectionStyle = {
 	backgroundImage:
@@ -16,22 +18,25 @@ const sectionStyle = {
 	top: '0'
 };
 
+
 function App() {
 
-	const [panel, setPanel] = useState(false);
+  const [panel, setPanel] = useState(false);
+	//const [] = useState({ mode: 'light' });
 
-	function toggleButton() {
-		if (!panel) setPanel(true);
-		else setPanel(false);
+  function toggleButton() {
+    if (!panel) setPanel(true);
+    else setPanel(false);
 
-		if (panel === false) {
-			document.getElementById('ToggleButton').style.background = '#161625';
-		}
-	}
+    if (panel === false) {
+      document.getElementById("ToggleButton").style.background = "#161625";
+    }
+  }
 
-	return (
-		<div className='App' style={sectionStyle}>
-			<AuthContext>
+  return (
+     <div className="dark-mode">
+    <div className="App "style={sectionStyle}>
+    <AuthContext>
 				<AlertContext>
 					<TopMenu toggleButton={toggleButton} />
 					<Maincontent />
@@ -41,19 +46,21 @@ function App() {
 					<Footer />
 				</AlertContext>
 			</AuthContext>
-		
-			<Hidden smUp>
-						<Container>
-							<Button
-								tooltip="The big plus button!"
-								icon="fas fa-chevron-up"
-								rotate={false}
-								onClick={() => window.scrollTo(0,0)} />
-						</Container>
-			</Hidden>
-		</div>
-		
-	);
-}
 
+			<Hidden smUp>
+				<Container>
+					<Button
+						tooltip='The big plus button!'
+						icon='fas fa-chevron-up'
+						rotate={false}
+						onClick={() => window.scrollTo(0, 0)}
+					/>
+				</Container>
+			</Hidden>
+
+   </div>
+   </div>
+   
+);
+  }
 export default App;
